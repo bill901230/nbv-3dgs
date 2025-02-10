@@ -58,6 +58,9 @@ if __name__ == '__main__':
     iter = 0
     start = time.perf_counter()
     for model in model_list:
+        print(model)
+        if model == "intrinsics.txt":  
+            continue
         # 打印进度条
         percentage = ((iter + 1) / model_size) * 100
         finished = "*" * int(percentage)

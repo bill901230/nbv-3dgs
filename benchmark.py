@@ -354,7 +354,7 @@ if __name__ == '__main__':
                                                  env=test_env, 
                                                  policy_kwargs=policy_kwargs, 
                                                  policy="MultiInputPolicy",
-                                                 device='cuda:1')
+                                                 device='cuda:0')
 
     results = {}
     algorithms = {}

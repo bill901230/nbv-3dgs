@@ -8,6 +8,7 @@ import pdb
 # Usage: blender -b -P render_depth.py
 # nohup ./run.sh > test.log 2>&1 & 
 
+# bpy.ops.preferences.addon_enable(module="io_scene_obj")
 
 def setup_blender(width, height, focal_length, output_dir):
     # camera
@@ -24,6 +25,9 @@ def setup_blender(width, height, focal_length, output_dir):
     scene.render.resolution_x = width
     scene.render.resolution_y = height
 
+    bpy.context.view_layer.use_pass_z = True  # 確保深度通道啟用
+
+
     # compositor nodes
     scene.use_nodes = True
     tree = scene.node_tree
@@ -34,15 +38,15 @@ def setup_blender(width, height, focal_length, output_dir):
     tree.links.new(rl.outputs['Depth'], output.inputs[0])
 
     # remove default cube
-    bpy.data.objects['Cube'].select = True
+    bpy.data.objects['Cube'].select_set(True)
     bpy.ops.object.delete()
 
     return scene, camera, output
 
 
 if __name__ == '__main__':
-    data_path = "/home/wang/data/rl_nbv/train/"
-    output_path = "/home/wang/data/rl_nbv/output/train/"
+    data_path = "../../data/house3k"
+    output_path = "../../data/house3k"
     view_space_path = "./viewspace_shapenet_33.txt"
     width = 640
     height = 480
@@ -73,7 +77,11 @@ if __name__ == '__main__':
     print("-- begin render, model size: {} --".format(model_size))
     iter = 0
     start = time.time()
+    print(model_list)
     for model in model_list:
+        print(model)
+        if model == "intrinsics.txt":  
+            continue
         # 打印进度条
         percentage = ((iter + 1) / model_size) * 100
         finished = "*" * int(percentage)
@@ -104,12 +112,16 @@ if __name__ == '__main__':
 
         # Import mesh model
         model_obj_path = os.path.join(data_path, model, "model.obj")
-        bpy.ops.import_scene.obj(filepath=model_obj_path)
-        # Rotate model by 90 degrees around x-axis (z-up => y-up) to match ShapeNet's coordinates
-        bpy.ops.transform.rotate(value=-np.pi / 2, axis=(1, 0, 0))  
+        # bpy.ops.import_scene.obj(filepath=model_obj_path)
+        bpy.ops.wm.obj_import(filepath=model_obj_path)
 
+        # Rotate model by 90 degrees around x-axis (z-up => y-up) to match ShapeNet's coordinates
+        # bpy.ops.transform.rotate(value=-np.pi / 2, axis=(1, 0, 0))  
+        bpy.ops.transform.rotate(value=-np.pi / 2, orient_axis='X') 
+        print("start")
         # Render
         for i in range(viewspace.shape[0]):
+            print(i)
             scene.frame_set(i)
             cam_pose = mathutils.Vector((viewspace[i][0], viewspace[i][1], viewspace[i][2]))
             center_pose = mathutils.Vector((0, 0, 0))
@@ -121,7 +133,7 @@ if __name__ == '__main__':
             output.file_slots[0].path = os.path.join(exr_dir, '#.exr')
             bpy.ops.render.render(write_still=True)
             np.savetxt(os.path.join(pose_dir, '%d.txt' % i), pose_matrix, '%f')
-        
+        print("end")
         # Clean up
         bpy.ops.object.delete()
         for m in bpy.data.meshes:

@@ -1,0 +1,293 @@
+[2025-02-10 18:36:27] [INFO] start algorithm: DQN
+[2025-02-10 18:36:27] [INFO] model size: 8
+[2025-02-10 18:36:27] [INFO] init_step: 0
+[2025-02-10 18:36:31] [INFO] handle model: 2
+[2025-02-10 18:36:40] [ERROR] model name: 2, step: 10, coverage: 0.78314208984375
+[2025-02-10 18:36:43] [INFO] handle model: 3
+[2025-02-10 18:36:56] [ERROR] model name: 3, step: 10, coverage: 0.79302978515625
+[2025-02-10 18:36:58] [INFO] handle model: 4
+[2025-02-10 18:37:13] [ERROR] model name: 4, step: 10, coverage: 0.79315185546875
+[2025-02-10 18:37:16] [INFO] handle model: 5
+[2025-02-10 18:37:26] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:37:27] [INFO] handle model: 6
+[2025-02-10 18:37:37] [INFO] handle model: 7
+[2025-02-10 18:37:47] [INFO] handle model: 8
+[2025-02-10 18:37:57] [INFO] handle model: 1
+[2025-02-10 18:38:04] [ERROR] model name: 1, step: 10, coverage: 0.635498046875
+[2025-02-10 18:38:04] [INFO] init_step: 8
+[2025-02-10 18:38:04] [INFO] handle model: 2
+[2025-02-10 18:38:10] [ERROR] model name: 2, step: 10, coverage: 0.77606201171875
+[2025-02-10 18:38:10] [INFO] handle model: 3
+[2025-02-10 18:38:26] [ERROR] model name: 3, step: 10, coverage: 0.81365966796875
+[2025-02-10 18:38:27] [INFO] handle model: 4
+[2025-02-10 18:38:41] [ERROR] model name: 4, step: 10, coverage: 0.7396240234375
+[2025-02-10 18:38:41] [INFO] handle model: 5
+[2025-02-10 18:38:49] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:38:49] [INFO] handle model: 6
+[2025-02-10 18:38:57] [INFO] handle model: 7
+[2025-02-10 18:39:02] [INFO] handle model: 8
+[2025-02-10 18:39:13] [INFO] handle model: 1
+[2025-02-10 18:39:23] [ERROR] model name: 1, step: 10, coverage: 0.64959716796875
+[2025-02-10 18:39:23] [INFO] init_step: 8
+[2025-02-10 18:39:23] [INFO] handle model: 2
+[2025-02-10 18:39:34] [ERROR] model name: 2, step: 10, coverage: 0.8890380859375
+[2025-02-10 18:39:34] [INFO] handle model: 3
+[2025-02-10 18:39:43] [ERROR] model name: 3, step: 10, coverage: 0.80120849609375
+[2025-02-10 18:39:44] [INFO] handle model: 4
+[2025-02-10 18:39:52] [ERROR] model name: 4, step: 10, coverage: 0.79248046875
+[2025-02-10 18:39:52] [INFO] handle model: 5
+[2025-02-10 18:40:03] [ERROR] model name: 5, step: 10, coverage: 0.5789794921875
+[2025-02-10 18:40:03] [INFO] handle model: 6
+[2025-02-10 18:40:17] [INFO] handle model: 7
+[2025-02-10 18:40:23] [INFO] handle model: 8
+[2025-02-10 18:40:34] [INFO] handle model: 1
+[2025-02-10 18:40:40] [ERROR] model name: 1, step: 10, coverage: 0.625
+[2025-02-10 18:40:40] [INFO] init_step: 8
+[2025-02-10 18:40:40] [INFO] handle model: 2
+[2025-02-10 18:40:50] [ERROR] model name: 2, step: 10, coverage: 0.789794921875
+[2025-02-10 18:40:50] [INFO] handle model: 3
+[2025-02-10 18:41:01] [ERROR] model name: 3, step: 10, coverage: 0.788818359375
+[2025-02-10 18:41:01] [INFO] handle model: 4
+[2025-02-10 18:41:14] [ERROR] model name: 4, step: 10, coverage: 0.72723388671875
+[2025-02-10 18:41:14] [INFO] handle model: 5
+[2025-02-10 18:41:21] [ERROR] model name: 5, step: 10, coverage: 0.6082763671875
+[2025-02-10 18:41:22] [INFO] handle model: 6
+[2025-02-10 18:41:28] [INFO] handle model: 7
+[2025-02-10 18:41:38] [INFO] handle model: 8
+[2025-02-10 18:41:55] [INFO] handle model: 1
+[2025-02-10 18:42:02] [ERROR] model name: 1, step: 10, coverage: 0.625
+[2025-02-10 18:42:02] [INFO] init_step: 8
+[2025-02-10 18:42:02] [INFO] handle model: 2
+[2025-02-10 18:42:12] [ERROR] model name: 2, step: 10, coverage: 0.890869140625
+[2025-02-10 18:42:12] [INFO] handle model: 3
+[2025-02-10 18:42:20] [ERROR] model name: 3, step: 10, coverage: 0.813720703125
+[2025-02-10 18:42:21] [INFO] handle model: 4
+[2025-02-10 18:42:31] [ERROR] model name: 4, step: 10, coverage: 0.8238525390625
+[2025-02-10 18:42:32] [INFO] handle model: 5
+[2025-02-10 18:42:41] [ERROR] model name: 5, step: 10, coverage: 0.558349609375
+[2025-02-10 18:42:41] [INFO] handle model: 6
+[2025-02-10 18:42:52] [INFO] handle model: 7
+[2025-02-10 18:42:59] [INFO] handle model: 8
+[2025-02-10 18:43:08] [INFO] handle model: 1
+[2025-02-10 18:43:15] [ERROR] model name: 1, step: 10, coverage: 0.62548828125
+[2025-02-10 18:43:15] [INFO] init_step: 8
+[2025-02-10 18:43:15] [INFO] handle model: 2
+[2025-02-10 18:43:33] [ERROR] model name: 2, step: 10, coverage: 0.7906494140625
+[2025-02-10 18:43:34] [INFO] handle model: 3
+[2025-02-10 18:43:43] [ERROR] model name: 3, step: 10, coverage: 0.79376220703125
+[2025-02-10 18:43:43] [INFO] handle model: 4
+[2025-02-10 18:43:54] [ERROR] model name: 4, step: 10, coverage: 0.72723388671875
+[2025-02-10 18:43:55] [INFO] handle model: 5
+[2025-02-10 18:44:01] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:44:02] [INFO] handle model: 6
+[2025-02-10 18:44:10] [INFO] handle model: 7
+[2025-02-10 18:44:18] [INFO] handle model: 8
+[2025-02-10 18:44:31] [INFO] handle model: 1
+[2025-02-10 18:44:38] [ERROR] model name: 1, step: 10, coverage: 0.6375732421875
+[2025-02-10 18:44:38] [INFO] init_step: 8
+[2025-02-10 18:44:38] [INFO] handle model: 2
+[2025-02-10 18:44:45] [ERROR] model name: 2, step: 10, coverage: 0.78338623046875
+[2025-02-10 18:44:45] [INFO] handle model: 3
+[2025-02-10 18:44:56] [ERROR] model name: 3, step: 10, coverage: 0.791015625
+[2025-02-10 18:44:56] [INFO] handle model: 4
+[2025-02-10 18:45:14] [ERROR] model name: 4, step: 10, coverage: 0.79315185546875
+[2025-02-10 18:45:15] [INFO] handle model: 5
+[2025-02-10 18:45:22] [ERROR] model name: 5, step: 10, coverage: 0.56243896484375
+[2025-02-10 18:45:22] [INFO] handle model: 6
+[2025-02-10 18:45:31] [INFO] handle model: 7
+[2025-02-10 18:45:37] [INFO] handle model: 8
+[2025-02-10 18:45:46] [INFO] handle model: 1
+[2025-02-10 18:45:55] [ERROR] model name: 1, step: 10, coverage: 0.63555908203125
+[2025-02-10 18:45:55] [INFO] init_step: 8
+[2025-02-10 18:45:55] [INFO] handle model: 2
+[2025-02-10 18:46:06] [ERROR] model name: 2, step: 10, coverage: 0.88189697265625
+[2025-02-10 18:46:06] [INFO] handle model: 3
+[2025-02-10 18:46:16] [ERROR] model name: 3, step: 10, coverage: 0.81365966796875
+[2025-02-10 18:46:17] [INFO] handle model: 4
+[2025-02-10 18:46:25] [ERROR] model name: 4, step: 10, coverage: 0.83782958984375
+[2025-02-10 18:46:25] [INFO] handle model: 5
+[2025-02-10 18:46:37] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:46:37] [INFO] handle model: 6
+[2025-02-10 18:46:53] [INFO] handle model: 7
+[2025-02-10 18:46:59] [INFO] handle model: 8
+[2025-02-10 18:47:09] [INFO] handle model: 1
+[2025-02-10 18:47:16] [ERROR] model name: 1, step: 10, coverage: 0.635498046875
+[2025-02-10 18:47:16] [INFO] init_step: 8
+[2025-02-10 18:47:16] [INFO] handle model: 2
+[2025-02-10 18:47:24] [ERROR] model name: 2, step: 10, coverage: 0.78350830078125
+[2025-02-10 18:47:24] [INFO] handle model: 3
+[2025-02-10 18:47:35] [ERROR] model name: 3, step: 10, coverage: 0.796142578125
+[2025-02-10 18:47:36] [INFO] handle model: 4
+[2025-02-10 18:47:48] [ERROR] model name: 4, step: 10, coverage: 0.79241943359375
+[2025-02-10 18:47:48] [INFO] handle model: 5
+[2025-02-10 18:47:56] [ERROR] model name: 5, step: 10, coverage: 0.580322265625
+[2025-02-10 18:47:56] [INFO] handle model: 6
+[2025-02-10 18:48:03] [INFO] handle model: 7
+[2025-02-10 18:48:10] [INFO] handle model: 8
+[2025-02-10 18:48:28] [INFO] handle model: 1
+[2025-02-10 18:48:35] [ERROR] model name: 1, step: 10, coverage: 0.6483154296875
+[2025-02-10 18:48:35] [INFO] init_step: 8
+[2025-02-10 18:48:35] [INFO] handle model: 2
+[2025-02-10 18:48:45] [ERROR] model name: 2, step: 10, coverage: 0.7850341796875
+[2025-02-10 18:48:45] [INFO] handle model: 3
+[2025-02-10 18:48:54] [ERROR] model name: 3, step: 10, coverage: 0.78887939453125
+[2025-02-10 18:48:54] [INFO] handle model: 4
+[2025-02-10 18:49:04] [ERROR] model name: 4, step: 10, coverage: 0.798828125
+[2025-02-10 18:49:04] [INFO] handle model: 5
+[2025-02-10 18:49:14] [ERROR] model name: 5, step: 10, coverage: 0.56292724609375
+[2025-02-10 18:49:14] [INFO] handle model: 6
+[2025-02-10 18:49:25] [INFO] handle model: 7
+[2025-02-10 18:49:31] [INFO] handle model: 8
+[2025-02-10 18:49:40] [INFO] handle model: 1
+[2025-02-10 18:49:48] [ERROR] model name: 1, step: 10, coverage: 0.64739990234375
+[2025-02-10 18:49:48] [INFO] init_step: 8
+[2025-02-10 18:49:48] [INFO] handle model: 2
+[2025-02-10 18:50:07] [ERROR] model name: 2, step: 10, coverage: 0.78729248046875
+[2025-02-10 18:50:07] [INFO] handle model: 3
+[2025-02-10 18:50:17] [ERROR] model name: 3, step: 10, coverage: 0.796142578125
+[2025-02-10 18:50:17] [INFO] handle model: 4
+[2025-02-10 18:50:29] [ERROR] model name: 4, step: 10, coverage: 0.83782958984375
+[2025-02-10 18:50:30] [INFO] handle model: 5
+[2025-02-10 18:50:37] [ERROR] model name: 5, step: 10, coverage: 0.56280517578125
+[2025-02-10 18:50:37] [INFO] handle model: 6
+[2025-02-10 18:50:46] [INFO] handle model: 7
+[2025-02-10 18:50:54] [INFO] handle model: 8
+[2025-02-10 18:51:06] [INFO] handle model: 1
+[2025-02-10 18:51:14] [ERROR] model name: 1, step: 10, coverage: 0.64276123046875
+[2025-02-10 18:51:14] [INFO] init_step: 8
+[2025-02-10 18:51:14] [INFO] handle model: 2
+[2025-02-10 18:51:21] [ERROR] model name: 2, step: 10, coverage: 0.87933349609375
+[2025-02-10 18:51:21] [INFO] handle model: 3
+[2025-02-10 18:51:32] [ERROR] model name: 3, step: 10, coverage: 0.796142578125
+[2025-02-10 18:51:32] [INFO] handle model: 4
+[2025-02-10 18:51:50] [ERROR] model name: 4, step: 10, coverage: 0.79315185546875
+[2025-02-10 18:51:50] [INFO] handle model: 5
+[2025-02-10 18:51:58] [ERROR] model name: 5, step: 10, coverage: 0.5693359375
+[2025-02-10 18:51:58] [INFO] handle model: 6
+[2025-02-10 18:52:07] [INFO] handle model: 7
+[2025-02-10 18:52:13] [INFO] handle model: 8
+[2025-02-10 18:52:22] [INFO] handle model: 1
+[2025-02-10 18:52:31] [ERROR] model name: 1, step: 10, coverage: 0.6175537109375
+[2025-02-10 18:52:31] [INFO] init_step: 8
+[2025-02-10 18:52:31] [INFO] handle model: 2
+[2025-02-10 18:52:42] [ERROR] model name: 2, step: 10, coverage: 0.80804443359375
+[2025-02-10 18:52:42] [INFO] handle model: 3
+[2025-02-10 18:52:52] [ERROR] model name: 3, step: 10, coverage: 0.78887939453125
+[2025-02-10 18:52:53] [INFO] handle model: 4
+[2025-02-10 18:53:01] [ERROR] model name: 4, step: 10, coverage: 0.7740478515625
+[2025-02-10 18:53:01] [INFO] handle model: 5
+[2025-02-10 18:53:13] [ERROR] model name: 5, step: 10, coverage: 0.60479736328125
+[2025-02-10 18:53:13] [INFO] handle model: 6
+[2025-02-10 18:53:27] [INFO] handle model: 7
+[2025-02-10 18:53:33] [INFO] handle model: 8
+[2025-02-10 18:53:45] [INFO] handle model: 1
+[2025-02-10 18:53:51] [ERROR] model name: 1, step: 10, coverage: 0.6510009765625
+[2025-02-10 18:53:51] [INFO] init_step: 8
+[2025-02-10 18:53:51] [INFO] handle model: 2
+[2025-02-10 18:54:00] [ERROR] model name: 2, step: 10, coverage: 0.7874755859375
+[2025-02-10 18:54:00] [INFO] handle model: 3
+[2025-02-10 18:54:11] [ERROR] model name: 3, step: 10, coverage: 0.786376953125
+[2025-02-10 18:54:11] [INFO] handle model: 4
+[2025-02-10 18:54:24] [ERROR] model name: 4, step: 10, coverage: 0.7740478515625
+[2025-02-10 18:54:25] [INFO] handle model: 5
+[2025-02-10 18:54:32] [ERROR] model name: 5, step: 10, coverage: 0.5631103515625
+[2025-02-10 18:54:32] [INFO] handle model: 6
+[2025-02-10 18:54:39] [INFO] handle model: 7
+[2025-02-10 18:54:48] [INFO] handle model: 8
+[2025-02-10 18:55:04] [INFO] handle model: 1
+[2025-02-10 18:55:11] [ERROR] model name: 1, step: 10, coverage: 0.635498046875
+[2025-02-10 18:55:11] [INFO] init_step: 8
+[2025-02-10 18:55:11] [INFO] handle model: 2
+[2025-02-10 18:55:21] [ERROR] model name: 2, step: 10, coverage: 0.78729248046875
+[2025-02-10 18:55:21] [INFO] handle model: 3
+[2025-02-10 18:55:29] [ERROR] model name: 3, step: 10, coverage: 0.78887939453125
+[2025-02-10 18:55:29] [INFO] handle model: 4
+[2025-02-10 18:55:40] [ERROR] model name: 4, step: 10, coverage: 0.83782958984375
+[2025-02-10 18:55:40] [INFO] handle model: 5
+[2025-02-10 18:55:49] [ERROR] model name: 5, step: 10, coverage: 0.5611572265625
+[2025-02-10 18:55:50] [INFO] handle model: 6
+[2025-02-10 18:56:00] [INFO] handle model: 7
+[2025-02-10 18:56:06] [INFO] handle model: 8
+[2025-02-10 18:56:15] [INFO] handle model: 1
+[2025-02-10 18:56:24] [ERROR] model name: 1, step: 10, coverage: 0.65380859375
+[2025-02-10 18:56:24] [INFO] init_step: 8
+[2025-02-10 18:56:24] [INFO] handle model: 2
+[2025-02-10 18:56:41] [ERROR] model name: 2, step: 10, coverage: 0.8092041015625
+[2025-02-10 18:56:41] [INFO] handle model: 3
+[2025-02-10 18:56:50] [ERROR] model name: 3, step: 10, coverage: 0.80126953125
+[2025-02-10 18:56:51] [INFO] handle model: 4
+[2025-02-10 18:57:02] [ERROR] model name: 4, step: 10, coverage: 0.83782958984375
+[2025-02-10 18:57:02] [INFO] handle model: 5
+[2025-02-10 18:57:08] [ERROR] model name: 5, step: 10, coverage: 0.5777587890625
+[2025-02-10 18:57:08] [INFO] handle model: 6
+[2025-02-10 18:57:13] [INFO] handle model: 7
+[2025-02-10 18:57:16] [INFO] handle model: 8
+[2025-02-10 18:57:22] [INFO] handle model: 1
+[2025-02-10 18:57:26] [ERROR] model name: 1, step: 10, coverage: 0.63763427734375
+[2025-02-10 18:57:26] [INFO] init_step: 8
+[2025-02-10 18:57:26] [INFO] handle model: 2
+[2025-02-10 18:57:32] [INFO] handle model: 3
+[2025-02-10 18:57:37] [ERROR] model name: 3, step: 10, coverage: 0.788818359375
+[2025-02-10 18:57:38] [INFO] handle model: 4
+[2025-02-10 18:57:44] [ERROR] model name: 4, step: 10, coverage: 0.79315185546875
+[2025-02-10 18:57:44] [INFO] handle model: 5
+[2025-02-10 18:57:49] [ERROR] model name: 5, step: 10, coverage: 0.580322265625
+[2025-02-10 18:57:49] [INFO] handle model: 6
+[2025-02-10 18:57:54] [INFO] handle model: 7
+[2025-02-10 18:57:57] [INFO] handle model: 8
+[2025-02-10 18:58:02] [INFO] handle model: 1
+[2025-02-10 18:58:06] [ERROR] model name: 1, step: 10, coverage: 0.6510009765625
+[2025-02-10 18:58:06] [INFO] init_step: 8
+[2025-02-10 18:58:07] [INFO] handle model: 2
+[2025-02-10 18:58:12] [ERROR] model name: 2, step: 10, coverage: 0.78729248046875
+[2025-02-10 18:58:12] [INFO] handle model: 3
+[2025-02-10 18:58:17] [ERROR] model name: 3, step: 10, coverage: 0.81219482421875
+[2025-02-10 18:58:17] [INFO] handle model: 4
+[2025-02-10 18:58:23] [ERROR] model name: 4, step: 10, coverage: 0.79339599609375
+[2025-02-10 18:58:24] [INFO] handle model: 5
+[2025-02-10 18:58:28] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:58:28] [INFO] handle model: 6
+[2025-02-10 18:58:33] [INFO] handle model: 7
+[2025-02-10 18:58:36] [INFO] handle model: 8
+[2025-02-10 18:58:42] [INFO] handle model: 1
+[2025-02-10 18:58:46] [ERROR] model name: 1, step: 10, coverage: 0.635498046875
+[2025-02-10 18:58:46] [INFO] init_step: 8
+[2025-02-10 18:58:46] [INFO] handle model: 2
+[2025-02-10 18:58:51] [ERROR] model name: 2, step: 10, coverage: 0.7901611328125
+[2025-02-10 18:58:51] [INFO] handle model: 3
+[2025-02-10 18:58:56] [ERROR] model name: 3, step: 10, coverage: 0.786376953125
+[2025-02-10 18:58:56] [INFO] handle model: 4
+[2025-02-10 18:59:03] [ERROR] model name: 4, step: 10, coverage: 0.814208984375
+[2025-02-10 18:59:03] [INFO] handle model: 5
+[2025-02-10 18:59:07] [ERROR] model name: 5, step: 10, coverage: 0.6197509765625
+[2025-02-10 18:59:08] [INFO] handle model: 6
+[2025-02-10 18:59:12] [INFO] handle model: 7
+[2025-02-10 18:59:15] [INFO] handle model: 8
+[2025-02-10 18:59:21] [INFO] handle model: 1
+[2025-02-10 18:59:24] [ERROR] model name: 1, step: 10, coverage: 0.625
+[2025-02-10 18:59:24] [INFO] init_step: 8
+[2025-02-10 18:59:25] [INFO] handle model: 2
+[2025-02-10 18:59:30] [ERROR] model name: 2, step: 10, coverage: 0.79425048828125
+[2025-02-10 18:59:30] [INFO] handle model: 3
+[2025-02-10 18:59:35] [ERROR] model name: 3, step: 10, coverage: 0.789794921875
+[2025-02-10 18:59:36] [INFO] handle model: 4
+[2025-02-10 18:59:42] [ERROR] model name: 4, step: 10, coverage: 0.827880859375
+[2025-02-10 18:59:42] [INFO] handle model: 5
+[2025-02-10 18:59:47] [ERROR] model name: 5, step: 10, coverage: 0.5653076171875
+[2025-02-10 18:59:47] [INFO] handle model: 6
+[2025-02-10 18:59:52] [INFO] handle model: 7
+[2025-02-10 18:59:54] [INFO] handle model: 8
+[2025-02-10 19:00:00] [INFO] handle model: 1
+[2025-02-10 19:00:03] [ERROR] model name: 1, step: 10, coverage: 0.6126708984375
+[2025-02-10 19:00:03] [INFO] DQN per NBV time: 0.461
+[2025-02-10 19:00:03] [INFO] --------- DQN ---------
+[2025-02-10 19:00:03] [INFO] [0] 17.55
+[2025-02-10 19:00:03] [INFO] [1] 41.94
+[2025-02-10 19:00:03] [INFO] [2] 54.79
+[2025-02-10 19:00:03] [INFO] [3] 62.64
+[2025-02-10 19:00:03] [INFO] [4] 68.68
+[2025-02-10 19:00:03] [INFO] [5] 72.32
+[2025-02-10 19:00:03] [INFO] [6] 75.10
+[2025-02-10 19:00:03] [INFO] [7] 77.37
+[2025-02-10 19:00:03] [INFO] [8] 78.99
+[2025-02-10 19:00:03] [INFO] [9] 80.55
