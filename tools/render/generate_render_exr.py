@@ -48,6 +48,7 @@ if __name__ == '__main__':
     data_path = "../../data/house3k"
     output_path = "../../data/house3k"
     view_space_path = "./viewspace_shapenet_33.txt"
+    # 調整角度
     width = 640
     height = 480
     focal = 476
