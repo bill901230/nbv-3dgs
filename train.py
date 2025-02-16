@@ -155,7 +155,7 @@ if __name__ == '__main__':
                                   env=train_env,
                                   policy_kwargs=policy_kwargs,
                                   verbose=1,
-                                  device='cuda:1',
+                                  device='cuda:0',
                                 #   buffer_size=10000,
                                   learning_starts=3000,
                                   batch_size=128,
@@ -182,7 +182,7 @@ if __name__ == '__main__':
         # load parameters form the pretrained model
         if not os.path.exists(args.pretrained_model_path):
             logger.error("pretrained_model_path: {} is not exists".format(args.pretrained_model_path))
-        checkpoint = torch.load(args.pretrained_model_path)
+        checkpoint = torch.load(args.pretrained_model_path,  weights_only=False)
         pretrained_model_state_dict = checkpoint["model_state_dict"]
         logger.info("!pretrained model parameters")
         logger.info('-'*40)
