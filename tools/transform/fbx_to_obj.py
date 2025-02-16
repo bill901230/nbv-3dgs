@@ -1,35 +1,39 @@
 import bpy
+import os
 
-def import_fbx(file_path):
-    # 导入 .fbx 文件
-    bpy.ops.import_scene.fbx(filepath=file_path)
+# 設定 FBX 和 OBJ 檔案路徑
+fbx_path = "../../data/house3k/BAT1_SETA_HOUSE48.fbx"
+obj_output_path = "../../data/house3k/BAT1_SETA_HOUSE48.obj"
+texture_output_dir = '../../data/house3k/'
 
-def extract_mesh_and_materials():
-    # 获取所有选中的对象
-    objects = bpy.context.selected_objects
-    
-    for obj in objects:
-        if obj.type == 'MESH':  # 只处理网格类型的对象
-            print(f"Object: {obj.name}")
-            
-            # 提取网格数据
-            mesh = obj.data
-            print("Vertices:")
-            for vertex in mesh.vertices:
-                print(f"  Vertex: {vertex.co}")
-            
-            # 提取材质
-            if obj.material_slots:
-                print("Materials:")
-                for slot in obj.material_slots:
-                    print(f"  Material: {slot.name}")
-            else:
-                print("No materials assigned.")
+# 清除場景中的所有物件
+bpy.ops.wm.read_factory_settings(use_empty=True)
 
-if __name__ == '__main__':
-    # 导入 FBX 文件
-    fbx_file_path = "path_to_your_file.fbx"  # 替换成你的 .fbx 文件路径
-    import_fbx(fbx_file_path)
-    
-    # 提取网格和材质
-    extract_mesh_and_materials()
+# 匯入 FBX
+bpy.ops.import_scene.fbx(filepath=fbx_path)
+
+# 確保匯出目錄存在
+os.makedirs(os.path.dirname(obj_output_path), exist_ok=True)
+
+# 匯出為 OBJ (使用新的 API)
+bpy.ops.wm.obj_export(
+    filepath=obj_output_path,
+    path_mode='COPY')
+
+for image in bpy.data.images:
+    if image.packed_file:
+        # 解包圖片
+        image.unpack(method='USE_ORIGINAL')
+        image_extension = ".jpg"  # 預設為 .jpg，若是其他格式需要調整
+        
+        # 根據圖片的檔案格式來確定副檔名
+        if image.file_format == 'JPEG':
+            image_extension = ".jpg"
+        elif image.file_format == 'PNG':
+            image_extension = ".png"
+        # 儲存解包的圖片到指定資料夾
+        # img_path = os.path.join(texture_output_dir, image.name)
+        img_path = os.path.join(texture_output_dir, image.name + image_extension)
+        image.save_render(img_path)
+
+print(f"已成功轉換: {fbx_path} -> {obj_output_path}")
