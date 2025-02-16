@@ -4,6 +4,8 @@ import argparse
 import time
 import open3d as o3d
 import numpy as np
+import open3d as o3d
+import plotly.graph_objects as go
 
 def covert_obj_2_pcd_open3d(model_obj_path, model_pcd_path):
     mesh = o3d.io.read_triangle_mesh(model_obj_path)
