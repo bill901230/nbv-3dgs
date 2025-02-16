@@ -1,0 +1,74 @@
+[2025-02-15 14:50:33] [INFO] start algorithm: DQN
+[2025-02-15 14:50:33] [INFO] model size: 1
+[2025-02-15 14:50:33] [INFO] init_step: 0
+[2025-02-15 14:50:33] [INFO] handle model: 1
+[2025-02-15 14:51:01] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:51:01] [INFO] init_step: 1
+[2025-02-15 14:51:01] [INFO] handle model: 1
+[2025-02-15 14:51:30] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:51:30] [INFO] init_step: 1
+[2025-02-15 14:51:30] [INFO] handle model: 1
+[2025-02-15 14:51:55] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:51:55] [INFO] init_step: 1
+[2025-02-15 14:51:56] [INFO] handle model: 1
+[2025-02-15 14:52:26] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:52:26] [INFO] init_step: 1
+[2025-02-15 14:52:27] [INFO] handle model: 1
+[2025-02-15 14:52:51] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:52:51] [INFO] init_step: 1
+[2025-02-15 14:52:52] [INFO] handle model: 1
+[2025-02-15 14:53:17] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:53:17] [INFO] init_step: 1
+[2025-02-15 14:53:17] [INFO] handle model: 1
+[2025-02-15 14:53:43] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:53:43] [INFO] init_step: 1
+[2025-02-15 14:53:43] [INFO] handle model: 1
+[2025-02-15 14:54:11] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:54:11] [INFO] init_step: 1
+[2025-02-15 14:54:12] [INFO] handle model: 1
+[2025-02-15 14:54:41] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:54:41] [INFO] init_step: 1
+[2025-02-15 14:54:41] [INFO] handle model: 1
+[2025-02-15 14:55:06] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:55:06] [INFO] init_step: 1
+[2025-02-15 14:55:07] [INFO] handle model: 1
+[2025-02-15 14:55:33] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:55:33] [INFO] init_step: 1
+[2025-02-15 14:55:34] [INFO] handle model: 1
+[2025-02-15 14:56:03] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:56:03] [INFO] init_step: 1
+[2025-02-15 14:56:03] [INFO] handle model: 1
+[2025-02-15 14:56:32] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:56:32] [INFO] init_step: 1
+[2025-02-15 14:56:32] [INFO] handle model: 1
+[2025-02-15 14:57:03] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:57:03] [INFO] init_step: 1
+[2025-02-15 14:57:04] [INFO] handle model: 1
+[2025-02-15 14:57:30] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:57:30] [INFO] init_step: 1
+[2025-02-15 14:57:30] [INFO] handle model: 1
+[2025-02-15 14:57:59] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:57:59] [INFO] init_step: 1
+[2025-02-15 14:57:59] [INFO] handle model: 1
+[2025-02-15 14:58:25] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:58:25] [INFO] init_step: 1
+[2025-02-15 14:58:25] [INFO] handle model: 1
+[2025-02-15 14:58:54] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:58:54] [INFO] init_step: 1
+[2025-02-15 14:58:54] [INFO] handle model: 1
+[2025-02-15 14:59:23] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:59:23] [INFO] init_step: 1
+[2025-02-15 14:59:23] [INFO] handle model: 1
+[2025-02-15 14:59:51] [ERROR] model name: 1, step: 10, coverage: 0.000732421875
+[2025-02-15 14:59:51] [INFO] DQN per NBV time: 0.532
+[2025-02-15 14:59:51] [INFO] --------- DQN ---------
+[2025-02-15 14:59:51] [INFO] [0] 0.00
+[2025-02-15 14:59:51] [INFO] [1] 0.00
+[2025-02-15 14:59:51] [INFO] [2] 0.02
+[2025-02-15 14:59:51] [INFO] [3] 0.02
+[2025-02-15 14:59:51] [INFO] [4] 0.02
+[2025-02-15 14:59:51] [INFO] [5] 0.02
+[2025-02-15 14:59:51] [INFO] [6] 0.04
+[2025-02-15 14:59:51] [INFO] [7] 0.07
+[2025-02-15 14:59:51] [INFO] [8] 0.07
+[2025-02-15 14:59:51] [INFO] [9] 0.07

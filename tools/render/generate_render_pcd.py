@@ -81,7 +81,12 @@ if __name__ == '__main__':
             pose_path = os.path.join(pcd_path, 'pose', '%d.txt' % i)   
 
             depth = read_exr(exr_path, height, width)
-            depth_img = open3d.geometry.Image(np.uint16(depth * 100000))
+            # depth_img = open3d.geometry.Image(np.uint16(depth * 100000))
+            depth_img = open3d.geometry.Image(np.uint16(depth * 150000))
+
+            # depth_scaled = np.clip(depth * 1000, 0, 65535).astype(np.uint16)
+            # depth_img = open3d.geometry.Image(depth_scaled)
+
             open3d.io.write_image(os.path.join(pcd_path, '%d.png' % i), depth_img) 
 
             pose = np.loadtxt(pose_path)

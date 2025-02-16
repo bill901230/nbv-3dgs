@@ -47,11 +47,14 @@ def setup_blender(width, height, focal_length, output_dir):
 if __name__ == '__main__':
     data_path = "../../data/house3k"
     output_path = "../../data/house3k"
-    view_space_path = "./viewspace_shapenet_33.txt"
+    # view_space_path = "./viewspace_shapenet_33.txt"
+    view_space_path = "./house3k_viewspace_shapenet_33.txt"
+
     # 調整角度
     width = 640
     height = 480
     focal = 476
+    # focal = 45
 
     # check input arguments
     if not os.path.exists(data_path):
@@ -68,6 +71,7 @@ if __name__ == '__main__':
                 model_set.add(line.strip('\n'))
 
     viewspace = np.loadtxt(view_space_path)
+
     scene, camera, output = setup_blender(width, height, focal, output_path)
     intrinsics = np.array([[focal, 0, width / 2], [0, focal, height / 2], [0, 0, 1]])
     open('blender.log', 'w+').close()
