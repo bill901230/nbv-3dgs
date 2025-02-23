@@ -4,6 +4,7 @@ import argparse
 import time
 import open3d as o3d
 import numpy as np
+import pyvista as pv
 
 def covert_obj_2_pcd_open3d(model_obj_path, model_pcd_path):
     mesh = o3d.io.read_triangle_mesh(model_obj_path)
@@ -22,6 +23,22 @@ def delete_texture(mode_path):
             if os.path.exists(file_path):
                 os.system("rm -rf {}".format(file_path))
 
+def mesh_to_pcd(mesh, output_pcd_path):
+    """
+    Convert a mesh to a point cloud and save it as .pcd file.
+    
+    - mesh: PyVista PolyData object
+    - output_pcd_path: Path to save the .pcd file
+    """
+    points = mesh.points  # 提取 mesh 的頂點 (N, 3)
+    
+    # 創建 Open3D 點雲物件
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points)  # 設定點雲座標
+    
+    # 存儲為 .pcd 文件
+    o3d.io.write_point_cloud(output_pcd_path, pcd)
+    print(f"Point cloud saved to {output_pcd_path}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
