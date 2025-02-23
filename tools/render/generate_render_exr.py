@@ -47,8 +47,8 @@ def setup_blender(width, height, focal_length, output_dir):
 if __name__ == '__main__':
     data_path = "../../data/house3k"
     output_path = "../../data/house3k"
-    # view_space_path = "./viewspace_shapenet_33.txt"
-    view_space_path = "./house3k_viewspace_shapenet_33.txt"
+    view_space_path = "./viewspace_shapenet_33.txt"
+    # view_space_path = "./house3k_viewspace_shapenet_33.txt"
 
     # 調整角度
     width = 640
@@ -122,7 +122,7 @@ if __name__ == '__main__':
 
         # Rotate model by 90 degrees around x-axis (z-up => y-up) to match ShapeNet's coordinates
         # bpy.ops.transform.rotate(value=-np.pi / 2, axis=(1, 0, 0))  
-        bpy.ops.transform.rotate(value=-np.pi / 2, orient_axis='X') 
+        bpy.ops.transform.rotate(value=np.pi / 2, orient_axis='X') 
         print("start")
         # Render
         for i in range(viewspace.shape[0]):

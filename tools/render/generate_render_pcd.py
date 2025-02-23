@@ -18,8 +18,13 @@ def read_exr(exr_path, height, width):
     file = OpenEXR.InputFile(exr_path)
     depth_arr = array.array('f', file.channel('R', Imath.PixelType(Imath.PixelType.FLOAT)))
     depth = np.array(depth_arr).reshape((height, width))
+
+    print(f"Min depth: {depth.min()}, Max depth: {depth.max()}")  # 🔥 檢查數值範圍
+
+
     depth[depth < 0] = 0
     depth[np.isinf(depth)] = 0
+    depth[depth > 10] = 0 
     return depth
 
 
