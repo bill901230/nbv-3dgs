@@ -12,11 +12,11 @@ python benchmark.py --test_data_path ./data/house3k\
                     --test_rlnbv 1\
                     --test_information_gain 0\
                     --test_pcnbv 0\
-                    --dqn_model_path rl_nbv\
+                    --dqn_model_path shapenet_rl_nbv\
                     --pcnbv_action_path ./actions/complex_shaped_object.txt\
                     --is_load_test_rlt 0\
                     --test_rlt_path cr_novel_400.rlt\
                     --is_resume 0\
                     --save_detail 0\
-                    --detail_fold house3k\
+                    --detail_fold house3k
                     --loop_num 20
