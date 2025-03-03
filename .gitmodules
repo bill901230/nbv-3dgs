@@ -1,0 +1,3 @@
+[submodule "mvsplat"]
+	path = mvsplat
+	url = https://github.com/donydchen/mvsplat.git
