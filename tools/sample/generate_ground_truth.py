@@ -1,3 +1,5 @@
+# nbv-3dgs/tools/sample/generate_ground_truth.py
+
 import os
 import sys
 import argparse
