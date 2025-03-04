@@ -45,10 +45,16 @@ def setup_blender(width, height, focal_length, output_dir):
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     data_path = "../../data/house3k"
     output_path = "../../data/house3k"
     view_space_path = "./viewspace_shapenet_33.txt"
     # 調整角度
+=======
+    data_path = "/home_nfs/whp/RL-NBV/data/house3k"
+    output_path = "/home_nfs/whp/RL-NBV/data/house3k"
+    view_space_path = "./viewspace_shapenet_33.txt"
+>>>>>>> origin/weiling
     width = 640
     height = 480
     focal = 476
@@ -78,11 +84,15 @@ if __name__ == '__main__':
     print("-- begin render, model size: {} --".format(model_size))
     iter = 0
     start = time.time()
+<<<<<<< HEAD
     print(model_list)
     for model in model_list:
         print(model)
         if model == "intrinsics.txt":  
             continue
+=======
+    for model in model_list:
+>>>>>>> origin/weiling
         # 打印进度条
         percentage = ((iter + 1) / model_size) * 100
         finished = "*" * int(percentage)
@@ -102,6 +112,10 @@ if __name__ == '__main__':
             print("[ERRO] model output path: {} is not exist".format(model_output_path))
             exit
         exr_dir = os.path.join(model_output_path, 'exr')
+<<<<<<< HEAD
+=======
+        # print(exr_dir)
+>>>>>>> origin/weiling
         pose_dir = os.path.join(model_output_path, 'pose')
         os.makedirs(exr_dir, exist_ok=True)
         os.makedirs(pose_dir, exist_ok=True)
@@ -113,6 +127,7 @@ if __name__ == '__main__':
 
         # Import mesh model
         model_obj_path = os.path.join(data_path, model, "model.obj")
+<<<<<<< HEAD
         # bpy.ops.import_scene.obj(filepath=model_obj_path)
         bpy.ops.wm.obj_import(filepath=model_obj_path)
 
@@ -123,6 +138,14 @@ if __name__ == '__main__':
         # Render
         for i in range(viewspace.shape[0]):
             print(i)
+=======
+        bpy.ops.import_scene.obj(filepath=model_obj_path)
+        # Rotate model by 90 degrees around x-axis (z-up => y-up) to match ShapeNet's coordinates
+        bpy.ops.transform.rotate(value=-np.pi / 2, axis=(1, 0, 0))  
+
+        # Render
+        for i in range(viewspace.shape[0]):
+>>>>>>> origin/weiling
             scene.frame_set(i)
             cam_pose = mathutils.Vector((viewspace[i][0], viewspace[i][1], viewspace[i][2]))
             center_pose = mathutils.Vector((0, 0, 0))
@@ -134,7 +157,11 @@ if __name__ == '__main__':
             output.file_slots[0].path = os.path.join(exr_dir, '#.exr')
             bpy.ops.render.render(write_still=True)
             np.savetxt(os.path.join(pose_dir, '%d.txt' % i), pose_matrix, '%f')
+<<<<<<< HEAD
         print("end")
+=======
+        
+>>>>>>> origin/weiling
         # Clean up
         bpy.ops.object.delete()
         for m in bpy.data.meshes:

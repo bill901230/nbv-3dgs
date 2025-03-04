@@ -1,7 +1,11 @@
 # Author: Wentao Yuan (wyuan1@cs.cmu.edu) 05/31/2018
 # Modified by Rui Zeng 07/12/2020
 
+<<<<<<< HEAD
 import Imath
+=======
+import imath
+>>>>>>> origin/weiling
 import OpenEXR
 import argparse
 import array
@@ -58,9 +62,12 @@ if __name__ == '__main__':
     iter = 0
     start = time.perf_counter()
     for model in model_list:
+<<<<<<< HEAD
         print(model)
         if model == "intrinsics.txt":  
             continue
+=======
+>>>>>>> origin/weiling
         # 打印进度条
         percentage = ((iter + 1) / model_size) * 100
         finished = "*" * int(percentage)

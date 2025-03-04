@@ -46,6 +46,7 @@ def cal_pose(angle_x, angle_y, angle_z):
     pose = np.concatenate([np.concatenate([R, t], 1), [[0, 0, 0, 1]]], 0)
     return t, pose
 
+<<<<<<< HEAD
 if __name__ == '__main__': 
     
     t_list = []
@@ -59,3 +60,34 @@ if __name__ == '__main__':
 
     viewspace = np.hstack(t_list).T
     np.savetxt("viewspace_shapenet_33.txt", viewspace[7:]) # discard 7 duplicate points
+=======
+def generate_pos():
+    r = 2
+    for phi in range(-30, 90, 15):
+        rad_phi = np.radians(phi)
+        for theta in range(0, 360, 36):
+            rad_theta = np.radians(theta)
+            sin_phi = np.sin(rad_phi)
+            cos_phi = np.cos(rad_phi)
+            sin_theta = np.sin(rad_theta)
+            cos_theta = np.cos(rad_theta)
+
+            print(f'({r*sin_phi*cos_theta},{r*sin_phi*sin_theta},{r*cos_phi}),')
+
+if __name__ == '__main__': 
+    
+    # t_list = []
+
+    # for i in range(-90, 45, 30):
+    #     angle_x = i * np.pi / 180
+    #     for j in range(0, 360, 45):
+    #         angle_y = j * np.pi / 180
+    #         t, _ = cal_pose(angle_x, angle_y, 0)
+    #         t_list.append(t)
+    #         # print(t)
+    #         print(f'({t[0][0]}, {t[1][0]}, {t[2][0]}),')
+
+    # viewspace = np.hstack(t_list).T
+    # np.savetxt("viewspace_shapenet_33.txt", viewspace[7:]) # discard 7 duplicate points
+    generate_pos()
+>>>>>>> origin/weiling

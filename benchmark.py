@@ -354,7 +354,11 @@ if __name__ == '__main__':
                                                  env=test_env, 
                                                  policy_kwargs=policy_kwargs, 
                                                  policy="MultiInputPolicy",
+<<<<<<< HEAD
                                                  device='cuda:0')
+=======
+                                                 device='cuda:1')
+>>>>>>> origin/weiling
 
     results = {}
     algorithms = {}

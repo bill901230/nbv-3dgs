@@ -6,7 +6,11 @@ import json
 
 def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
                         start_pose=(1.0, 0.0, 0.0), end_pose=(0.0, 1.0, 0.0),
+<<<<<<< HEAD
                         image_size=(640, 480), focal_length=500):
+=======
+                        image_size=(640, 480)):
+>>>>>>> origin/weiling
 
     # 確保變數初始化
     obj_path, texture_path = None, None
@@ -69,6 +73,10 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         extrinsics[:3, 3] = -rotation_matrix @ camera.position  # T = -R * C
 
         # 設定 intrinsics（3x3 矩陣）
+<<<<<<< HEAD
+=======
+        focal_length = camera.focal_point - camera.position
+>>>>>>> origin/weiling
         intrinsics = np.array([
             [focal_length, 0, image_size[0] / 2],  # fx, 0, cx
             [0, focal_length, image_size[1] / 2],  # 0, fy, cy
@@ -92,7 +100,11 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         old_centroid = copy_mesh.center
         copy_mesh.translate(-np.array(old_centroid), inplace=True)  # 移動到原點
         copy_mesh.rotate_vector([1, 0, 0], angle=90, inplace=True)  # 旋轉向上
+<<<<<<< HEAD
         copy_mesh.translate(old_centroid, inplace=True)  # 移回原點
+=======
+        # copy_mesh.translate(old_centroid, inplace=True)  # 移回原點
+>>>>>>> origin/weiling
 
         # 添加 mesh 和貼圖
         if texture:
@@ -113,8 +125,13 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     output_dir = './data/house3k_test/48/view/'
     input_dir = './data/house3k_test/48/'
+=======
+    output_dir = './data/house3k/HOUSE48/view/'
+    input_dir = './data/house3k/HOUSE48/'
+>>>>>>> origin/weiling
     metadata_file = os.path.join(output_dir, "camera_metadata.json")
 
     generate_videoframe(input_dir, output_dir, metadata_file)

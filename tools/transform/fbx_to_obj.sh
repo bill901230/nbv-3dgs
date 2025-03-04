@@ -1,0 +1,1 @@
+blender -b -P fbx_to_obj.py

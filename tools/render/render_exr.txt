@@ -1,3 +1,7 @@
 1
+<<<<<<< HEAD
 BAT1_SETA_HOUSE8.fbx
 HOUSE48
+=======
+intrinsics.txt
+>>>>>>> origin/weiling
