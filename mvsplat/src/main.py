@@ -161,5 +161,6 @@ def train(cfg_dict: DictConfig):
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     torch.set_float32_matmul_precision('high')
-
+    torch.cuda.empty_cache()
+    torch.cuda.ipc_collect()
     train()

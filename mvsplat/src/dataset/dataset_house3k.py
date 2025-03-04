@@ -93,6 +93,13 @@ class DatasetHouse3K(Dataset):
         context_images, context_intrinsics, context_extrinsics, context_indices = load_data(context_indices)
         target_images, target_intrinsics, target_extrinsics, target_indices = load_data(target_indices)
 
+        if context_extrinsics.shape[0] == 2:# and self.cfg.make_baseline_1:
+            a, b = context_extrinsics[:, :3, 3]
+            scale = (a - b).norm()
+            context_extrinsics[:, :3, 3] /= scale
+        else:
+            scale = 1
+
         context_near = self.get_bound("near", context_extrinsics)
         context_far = self.get_bound("far", context_extrinsics)
         target_near = self.get_bound("near", target_extrinsics)
@@ -103,16 +110,16 @@ class DatasetHouse3K(Dataset):
                 "extrinsics": context_extrinsics,
                 "intrinsics": context_intrinsics,
                 "image": context_images,
-                "near": context_near,
-                "far": context_far,
+                "near": context_near / scale,
+                "far": context_far / scale,
                 "index": context_indices,
             },
             "target": {
                 "extrinsics": target_extrinsics,
                 "intrinsics": target_intrinsics,
                 "image": target_images,
-                "near": target_near,
-                "far": target_far,
+                "near": target_near / scale,
+                "far": target_far / scale,
                 "index": target_indices,
             },
             "scene": scene_id,

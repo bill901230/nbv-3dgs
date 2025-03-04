@@ -44,6 +44,8 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
     # 儲存 metadata
     metadata = {}
+    width = image_size[0]
+    height = image_size[1]
 
     for i in range(n_frames):
         camera = pv.Camera()
@@ -63,32 +65,40 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         x_axis /= np.linalg.norm(x_axis)
         y_axis = np.cross(z_axis, x_axis)
 
-        rotation_matrix = np.vstack([x_axis, y_axis, z_axis]).T  # 3x3
 
         # 計算 extrinsics（4x4）
-        extrinsics = np.eye(4)
-        extrinsics[:3, :3] = rotation_matrix
-        extrinsics[:3, 3] = -rotation_matrix @ camera.position  # T = -R * C
+        rotation_matrix = np.vstack([x_axis, y_axis, z_axis]).T  # 3x3
+        camera_position = np.array(camera.position)
+        extrinsics = np.hstack((rotation_matrix.T, camera_position.reshape(-1, 1)))
+        # print(extrinsics)
+        # return
 
         # 設定 intrinsics（3x3 矩陣
+        
+        focal_length_y = height / 2 / np.tan(np.radians(camera.view_angle / 2))
+        focal_length_x = width / height * focal_length_y
+
+        # intrinsics = np.array([
+        #     [focal_length_x / width, 0, 1 / 2],  # fx, 0, cx
+        #     [0, focal_length_y / height, 1 / 2],  # 0, fy, cy
+        #     [0, 0, 1]  # 0, 0, 1
+        # ])
+        intrinsics = np.array([focal_length_x / width,
+                               focal_length_y / height,
+                               1 / 2,
+                               1 / 2])
 
 
-        intrinsics = np.array([
-            [camera.distance, 0, 1 / 2],  # fx, 0, cx
-            [0, camera.distance, 1 / 2],  # 0, fy, cy
-            [0, 0, 1]  # 0, 0, 1
-        ])
 
         # 儲存相機資訊
         metadata[str(i)] = {
             "position": list(camera.position),
             "rotation": rotation_matrix.tolist(),
             "intrinsics": intrinsics.tolist(),
-            "extrinsics": extrinsics.tolist(),
+            "extrinsics": extrinsics.reshape(-1).tolist(),
             "near": 0.1,
             "far": 10.0,
             "image_path": f"view_{i:03d}.png"
-
         }
 
         # 處理 mesh 旋轉和對齊
@@ -117,10 +127,10 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
 
 if __name__ == '__main__':
-    output_dir = './data/house3k/HOUSE48/view/'
+    output_dir = './mvsplat/datasets/house3k/'
     input_dir = './data/house3k/HOUSE48/'
-    metadata_file = os.path.join(output_dir, "camera_metadata.json")
-
+    metadata_file = os.path.join(output_dir, "camera.json")
     # plotter = pv.Plotter(off_screen=True)
-    # print(plotter.camera.distance)
+    # print(plotter.camera.position)
+    # print(type(plotter.camera.position))
     generate_videoframe(input_dir, output_dir, metadata_file)
