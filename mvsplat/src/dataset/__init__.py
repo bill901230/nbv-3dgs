@@ -27,4 +27,4 @@ def get_dataset(
         cfg.cameras_are_circular,
         step_tracker,
     )
-    return DATASETS[cfg.name](cfg, stage, view_sampler)
+    return DATASETS[cfg.name](cfg, stage)

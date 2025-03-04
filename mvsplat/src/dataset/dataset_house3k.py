@@ -19,7 +19,7 @@ class DatasetHouse3KCfg(DatasetCfgCommon):
     skip_bad_shape: bool = True  # 是否跳過異常影像
     shuffle_val: bool = True  # 是否在驗證時打亂數據
 
-class DatasetHouse3K(IterableDataset):
+class DatasetHouse3K(Dataset):
     cfg: DatasetHouse3KCfg
 
     def __init__(self, cfg: DatasetHouse3KCfg, stage: str):
@@ -35,7 +35,7 @@ class DatasetHouse3K(IterableDataset):
     @cached_property
     def index(self) -> dict[str, dict]:
         """讀取 `evaluation_index_house3k.json` 作為數據索引"""
-        with open(self.cfg.roots[0] / "evaluation_index_house3k.json", "r") as f:
+        with open(self.cfg.roots[0] / "../../assets/evaluation_index_house3k.json", "r") as f:
             return json.load(f)  # 回傳 {scene_id: {"context": [...], "target": [...]}}
 
     @property
@@ -65,11 +65,18 @@ class DatasetHouse3K(IterableDataset):
 
     def load_image(self, image_path):
         """讀取影像並轉換為 PyTorch Tensor"""
-        img = Image.open(image_path).convert("RGB")
+        img = Image.open(self.cfg.roots[0] / image_path).convert("RGB")
         return self.transform(img)  # 轉換為 (3, H, W) Tensor
 
-    def __getitem__(self, scene_id):
+    def __getitem__(self, index):
+        scene_keys = list(self.index.keys())
+        scene_id = scene_keys[index] 
+        if scene_id not in self.index:
+            raise KeyError(f"scene_id {scene_id} 不存在於 `evaluation_index_house3k.json`!")
+
+
         scene_data = self.index[scene_id]
+
         context_indices = scene_data["context"]
         target_indices = scene_data["target"]
 
@@ -113,8 +120,11 @@ class DatasetHouse3K(IterableDataset):
 
     def __len__(self) -> int:
         """計算測試數據的長度"""
-        return (
-            min(len(self.index.keys()) * self.cfg.test_times_per_scene, self.cfg.test_len)
-            if self.stage == "test" and self.cfg.test_len > 0
-            else len(self.index.keys()) * self.cfg.test_times_per_scene
-        )
+        # return (
+        #     min(len(self.index.keys()) * self.cfg.test_times_per_scene, self.cfg.test_len)
+        #     if self.stage == "test" and self.cfg.test_len > 0
+        #     else len(self.index.keys()) * self.cfg.test_times_per_scene
+        # )
+        dataset_length = len(self.index.keys())  # 直接取 JSON 的鍵數量
+        print(f"DEBUG: Dataset Length={dataset_length}")  # 記錄長度
+        return dataset_length
