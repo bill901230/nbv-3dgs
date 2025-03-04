@@ -6,7 +6,7 @@ import json
 
 def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
                         start_pose=(1.0, 0.0, 0.0), end_pose=(0.0, 1.0, 0.0),
-                        image_size=(640, 480)):
+                        image_size=(256, 256)):
 
     # 確保變數初始化
     obj_path, texture_path = None, None
@@ -55,6 +55,8 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         plotter = pv.Plotter(off_screen=True)
         plotter.camera = camera
 
+        camera = plotter.camera
+        
         # 計算 rotation（3x3）
         z_axis = sight_dir / np.linalg.norm(sight_dir)
         x_axis = np.cross(camera.up, z_axis)
@@ -68,11 +70,12 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         extrinsics[:3, :3] = rotation_matrix
         extrinsics[:3, 3] = -rotation_matrix @ camera.position  # T = -R * C
 
-        # 設定 intrinsics（3x3 矩陣）
-        focal_length = camera.focal_point - camera.position
+        # 設定 intrinsics（3x3 矩陣
+
+
         intrinsics = np.array([
-            [focal_length, 0, image_size[0] / 2],  # fx, 0, cx
-            [0, focal_length, image_size[1] / 2],  # 0, fy, cy
+            [camera.distance, 0, 1 / 2],  # fx, 0, cx
+            [0, camera.distance, 1 / 2],  # 0, fy, cy
             [0, 0, 1]  # 0, 0, 1
         ])
 
@@ -118,4 +121,6 @@ if __name__ == '__main__':
     input_dir = './data/house3k/HOUSE48/'
     metadata_file = os.path.join(output_dir, "camera_metadata.json")
 
+    # plotter = pv.Plotter(off_screen=True)
+    # print(plotter.camera.distance)
     generate_videoframe(input_dir, output_dir, metadata_file)

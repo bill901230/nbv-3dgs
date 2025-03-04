@@ -107,7 +107,7 @@ def train(cfg_dict: DictConfig):
         max_epochs=-1,
         accelerator="gpu",
         logger=logger,
-        devices=[0, 1],
+        devices=[0],
         num_nodes=cfg.trainer.num_nodes,
         strategy="ddp" if torch.cuda.device_count() > 1 else "auto",
         callbacks=callbacks,
