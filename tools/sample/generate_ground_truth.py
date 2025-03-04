@@ -1,19 +1,11 @@
-<<<<<<< HEAD
 # nbv-3dgs/tools/sample/generate_ground_truth.py
 
-=======
->>>>>>> origin/weiling
 import os
 import sys
 import argparse
 import time
 import open3d as o3d
 import numpy as np
-<<<<<<< HEAD
-import open3d as o3d
-import plotly.graph_objects as go
-=======
->>>>>>> origin/weiling
 
 def covert_obj_2_pcd_open3d(model_obj_path, model_pcd_path):
     mesh = o3d.io.read_triangle_mesh(model_obj_path)

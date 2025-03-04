@@ -6,11 +6,7 @@ import json
 
 def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
                         start_pose=(1.0, 0.0, 0.0), end_pose=(0.0, 1.0, 0.0),
-<<<<<<< HEAD
-                        image_size=(640, 480), focal_length=500):
-=======
                         image_size=(640, 480)):
->>>>>>> origin/weiling
 
     # 確保變數初始化
     obj_path, texture_path = None, None

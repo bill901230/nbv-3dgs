@@ -14,7 +14,7 @@ colorspacious==1.1.2
 matplotlib==3.8.4
 moviepy==1.0.3
 imageio==2.34.1
-git+https://github.com/dcharatan/diff-gaussian-rasterization-modified
+# git+https://github.com/dcharatan/diff-gaussian-rasterization-modified
 timm==0.9.16
 dacite==1.8.1
 lpips==0.1.4
