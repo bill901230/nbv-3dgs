@@ -70,8 +70,8 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
         # 設定 intrinsics（3x3 矩陣）
         intrinsics = np.array([
-            [focal_length, 0, image_size[0] / 2],  # fx, 0, cx
-            [0, focal_length, image_size[1] / 2],  # 0, fy, cy
+            [focal_length/ image_size[0], 0, 1 / 2],  # fx, 0, cx
+            [0, focal_length/ image_size[1], 1 / 2],  # 0, fy, cy
             [0, 0, 1]  # 0, 0, 1
         ])
 
@@ -81,8 +81,6 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
             "rotation": rotation_matrix.tolist(),
             "intrinsics": intrinsics.tolist(),
             "extrinsics": extrinsics.tolist(),
-            "near": 0.1,
-            "far": 10.0,
             "image_path": f"view_{i:03d}.png"
 
         }
