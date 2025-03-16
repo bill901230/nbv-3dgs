@@ -107,7 +107,8 @@ def train(cfg_dict: DictConfig):
         max_epochs=-1,
         accelerator="gpu",
         logger=logger,
-        devices=[0],
+        # devices="auto",
+        devices=[3],
         num_nodes=cfg.trainer.num_nodes,
         strategy="ddp" if torch.cuda.device_count() > 1 else "auto",
         callbacks=callbacks,
@@ -161,6 +162,5 @@ def train(cfg_dict: DictConfig):
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     torch.set_float32_matmul_precision('high')
-    torch.cuda.empty_cache()
-    torch.cuda.ipc_collect()
+
     train()

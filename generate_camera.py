@@ -6,7 +6,7 @@ import json
 
 def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
                         start_pose=(1.0, 0.0, 0.0), end_pose=(0.0, 1.0, 0.0),
-                        image_size=(256, 256)):
+                        image_size=(640, 480), focal_length=500):
 
     # 確保變數初始化
     obj_path, texture_path = None, None
@@ -44,8 +44,6 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
     # 儲存 metadata
     metadata = {}
-    width = image_size[0]
-    height = image_size[1]
 
     for i in range(n_frames):
         camera = pv.Camera()
@@ -57,48 +55,34 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         plotter = pv.Plotter(off_screen=True)
         plotter.camera = camera
 
-        camera = plotter.camera
-        
         # 計算 rotation（3x3）
         z_axis = sight_dir / np.linalg.norm(sight_dir)
         x_axis = np.cross(camera.up, z_axis)
         x_axis /= np.linalg.norm(x_axis)
         y_axis = np.cross(z_axis, x_axis)
 
+        rotation_matrix = np.vstack([x_axis, y_axis, z_axis]).T  # 3x3
 
         # 計算 extrinsics（4x4）
-        rotation_matrix = np.vstack([x_axis, y_axis, z_axis]).T  # 3x3
-        camera_position = np.array(camera.position)
-        extrinsics = np.hstack((rotation_matrix.T, camera_position.reshape(-1, 1)))
-        # print(extrinsics)
-        # return
+        extrinsics = np.eye(4)
+        extrinsics[:3, :3] = rotation_matrix
+        extrinsics[:3, 3] = -rotation_matrix @ camera.position  # T = -R * C
 
-        # 設定 intrinsics（3x3 矩陣
-        
-        focal_length_y = height / 2 / np.tan(np.radians(camera.view_angle / 2))
-        focal_length_x = width / height * focal_length_y
-
-        # intrinsics = np.array([
-        #     [focal_length_x / width, 0, 1 / 2],  # fx, 0, cx
-        #     [0, focal_length_y / height, 1 / 2],  # 0, fy, cy
-        #     [0, 0, 1]  # 0, 0, 1
-        # ])
-        intrinsics = np.array([focal_length_x / width,
-                               focal_length_y / height,
-                               1 / 2,
-                               1 / 2])
-
-
+        # 設定 intrinsics（3x3 矩陣）
+        intrinsics = np.array([
+            [focal_length/ image_size[0], 0, 1 / 2],  # fx, 0, cx
+            [0, focal_length/ image_size[1], 1 / 2],  # 0, fy, cy
+            [0, 0, 1]  # 0, 0, 1
+        ])
 
         # 儲存相機資訊
         metadata[str(i)] = {
             "position": list(camera.position),
             "rotation": rotation_matrix.tolist(),
             "intrinsics": intrinsics.tolist(),
-            "extrinsics": extrinsics.reshape(-1).tolist(),
-            "near": 0.1,
-            "far": 10.0,
+            "extrinsics": extrinsics.tolist(),
             "image_path": f"view_{i:03d}.png"
+
         }
 
         # 處理 mesh 旋轉和對齊
@@ -106,7 +90,7 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
         old_centroid = copy_mesh.center
         copy_mesh.translate(-np.array(old_centroid), inplace=True)  # 移動到原點
         copy_mesh.rotate_vector([1, 0, 0], angle=90, inplace=True)  # 旋轉向上
-        # copy_mesh.translate(old_centroid, inplace=True)  # 移回原點
+        copy_mesh.translate(old_centroid, inplace=True)  # 移回原點
 
         # 添加 mesh 和貼圖
         if texture:
@@ -127,10 +111,8 @@ def generate_videoframe(input_dir, output_dir, metadata_file, n_frames=143,
 
 
 if __name__ == '__main__':
-    output_dir = './mvsplat/datasets/house3k/'
-    input_dir = './data/house3k/HOUSE48/'
-    metadata_file = os.path.join(output_dir, "camera.json")
-    # plotter = pv.Plotter(off_screen=True)
-    # print(plotter.camera.position)
-    # print(type(plotter.camera.position))
+    output_dir = './data/house3k_test/48/view/'
+    input_dir = './data/house3k_test/48/'
+    metadata_file = os.path.join(output_dir, "camera_metadata.json")
+
     generate_videoframe(input_dir, output_dir, metadata_file)

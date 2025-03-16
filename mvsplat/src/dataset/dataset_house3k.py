@@ -1,137 +1,370 @@
 import json
-import torch
-from torch.utils.data import Dataset, IterableDataset
-from torchvision import transforms
-from PIL import Image
-from functools import cached_property
-from typing import Literal
 from dataclasses import dataclass
-from .dataset import DatasetCfgCommon
+from functools import cached_property
+from io import BytesIO
 from pathlib import Path
+from typing import Literal
+
+import torch
+import torchvision.transforms as tf
+from einops import rearrange, repeat
+from jaxtyping import Float, UInt8
+from PIL import Image
+from torch import Tensor
+from torch.utils.data import IterableDataset
+from torch.utils.data import Dataset
+
+
+from ..geometry.projection import get_fov
+from .dataset import DatasetCfgCommon
+from .shims.augmentation_shim import apply_augmentation_shim
+from .shims.crop_shim import apply_crop_shim
+from .types import Stage
+from .view_sampler import ViewSampler
+
 
 @dataclass
 class DatasetHouse3KCfg(DatasetCfgCommon):
-    name: Literal["house3k"]  # 數據集名稱
-    roots: list[Path]  # 數據集路徑
-    augment: bool  # 是否進行數據增強
-    test_len: int  # 測試數據大小
-    test_times_per_scene: int  # 每個場景測試的次數
-    skip_bad_shape: bool = True  # 是否跳過異常影像
-    shuffle_val: bool = True  # 是否在驗證時打亂數據
+    name: Literal["house3k"]
+    roots: list[Path]
+    baseline_epsilon: float
+    max_fov: float
+    make_baseline_1: bool
+    augment: bool
+    test_len: int
+    test_chunk_interval: int
+    test_times_per_scene: int
+    skip_bad_shape: bool = True
+    near: float = -1.0
+    far: float = -1.0
+    baseline_scale_bounds: bool = True
+    shuffle_val: bool = True
+
 
 class DatasetHouse3K(Dataset):
     cfg: DatasetHouse3KCfg
+    stage: Stage
+    view_sampler: ViewSampler
 
-    def __init__(self, cfg: DatasetHouse3KCfg, stage: str):
+    to_tensor: tf.ToTensor
+    # chunks: list[Path]
+    near: float = 0.1
+    far: float = 1000.0
+
+    def __init__(
+        self,
+        cfg: DatasetHouse3KCfg,
+        stage: Stage,
+        # view_sampler: ViewSampler,
+    ) -> None:
         super().__init__()
-        self.cfg = cfg  # 儲存設定
-        self.stage = stage  # 設定 train / test / val 模式
-        self.transform = transforms.ToTensor()
+        self.cfg = cfg
+        self.stage = stage
+        # self.view_sampler = view_sampler
+        self.to_tensor = tf.ToTensor()
+        # NOTE: update near & far; remember to DISABLE `apply_bounds_shim` in encoder
+        if cfg.near != -1:
+            self.near = cfg.near
+        if cfg.far != -1:
+            self.far = cfg.far
 
-        # 讀取 cameras.json
-        with open(cfg.roots[0] / "camera.json", "r") as f:
-            self.cameras = json.load(f)
+        '''
+        # Collect chunks.
+        self.chunks = []
+        for root in cfg.roots:
+            root = root / self.data_stage
+            root_chunks = sorted(
+                [path for path in root.iterdir() if path.suffix == ".torch"]
+            )
+            self.chunks.extend(root_chunks)
+        if self.cfg.overfit_to_scene is not None:
+            chunk_path = self.index[self.cfg.overfit_to_scene]
+            self.chunks = [chunk_path] * len(self.chunks)
+        if self.stage == "test":
+            # NOTE: hack to skip some chunks in testing during training, but the index
+            # is not change, this should not cause any problem except for the display
+            self.chunks = self.chunks[:: cfg.test_chunk_interval]
+        '''
+        self.camera_data = self.load_camera_data()
+        self.data_index = list(self.camera_data.keys())
 
+    '''
+    def shuffle(self, lst: list) -> list:
+        indices = torch.randperm(len(lst))
+        return [lst[x] for x in indices]
+
+    def __iter__(self):
+        # Chunks must be shuffled here (not inside __init__) for validation to show
+        # random chunks.
+        if self.stage in (("train", "val") if self.cfg.shuffle_val else ("train")):
+            self.chunks = self.shuffle(self.chunks)
+
+        # When testing, the data loaders alternate chunks.
+        worker_info = torch.utils.data.get_worker_info()
+        if self.stage == "test" and worker_info is not None:
+            self.chunks = [
+                chunk
+                for chunk_index, chunk in enumerate(self.chunks)
+                if chunk_index % worker_info.num_workers == worker_info.id
+            ]
+
+        for chunk_path in self.chunks:
+            # print(chunk_path)
+            # Load the chunk.
+            chunk = torch.load(chunk_path)
+
+            if self.cfg.overfit_to_scene is not None:
+                item = [x for x in chunk if x["key"] == self.cfg.overfit_to_scene]
+                assert len(item) == 1
+                chunk = item * len(chunk)
+
+            if self.stage in (("train", "val") if self.cfg.shuffle_val else ("train")):
+                chunk = self.shuffle(chunk)
+
+            # for example in chunk:
+            times_per_scene = self.cfg.test_times_per_scene
+            for run_idx in range(int(times_per_scene * len(chunk))):
+                example = chunk[run_idx // times_per_scene]
+
+                extrinsics, intrinsics = self.convert_poses(example["cameras"])
+                if times_per_scene > 1:  # specifically for DTU
+                    scene = f"{example['key']}_{(run_idx % times_per_scene):02d}"
+                else:
+                    scene = example["key"]
+
+                try:
+                    context_indices, target_indices = self.view_sampler.sample(
+                        scene,
+                        extrinsics,
+                        intrinsics,
+                    )
+                    # reverse the context
+                    # context_indices = torch.flip(context_indices, dims=[0])
+                    # print(context_indices)
+                except ValueError:
+                    # Skip because the example doesn't have enough frames.
+                    continue
+
+                # Skip the example if the field of view is too wide.
+                if (get_fov(intrinsics).rad2deg() > self.cfg.max_fov).any():
+                    continue
+
+                # Load the images.
+                context_images = [
+                    example["images"][index.item()] for index in context_indices
+                ]
+                context_images = self.convert_images(context_images)
+                target_images = [
+                    example["images"][index.item()] for index in target_indices
+                ]
+                target_images = self.convert_images(target_images)
+
+                # Skip the example if the images don't have the right shape.
+                context_image_invalid = context_images.shape[1:] != (3, 360, 640)
+                target_image_invalid = target_images.shape[1:] != (3, 360, 640)
+                if self.cfg.skip_bad_shape and (context_image_invalid or target_image_invalid):
+                    print(
+                        f"Skipped bad example {example['key']}. Context shape was "
+                        f"{context_images.shape} and target shape was "
+                        f"{target_images.shape}."
+                    )
+                    continue
+
+                # Resize the world to make the baseline 1.
+                context_extrinsics = extrinsics[context_indices]
+                if context_extrinsics.shape[0] == 2 and self.cfg.make_baseline_1:
+                    a, b = context_extrinsics[:, :3, 3]
+                    scale = (a - b).norm()
+                    if scale < self.cfg.baseline_epsilon:
+                        print(
+                            f"Skipped {scene} because of insufficient baseline "
+                            f"{scale:.6f}"
+                        )
+                        continue
+                    extrinsics[:, :3, 3] /= scale
+                else:
+                    scale = 1
+
+                nf_scale = scale if self.cfg.baseline_scale_bounds else 1.0
+                example = {
+                    "context": {
+                        "extrinsics": extrinsics[context_indices],
+                        "intrinsics": intrinsics[context_indices],
+                        "image": context_images,
+                        "near": self.get_bound("near", len(context_indices)) / nf_scale,
+                        "far": self.get_bound("far", len(context_indices)) / nf_scale,
+                        "index": context_indices,
+                    },
+                    "target": {
+                        "extrinsics": extrinsics[target_indices],
+                        "intrinsics": intrinsics[target_indices],
+                        "image": target_images,
+                        "near": self.get_bound("near", len(target_indices)) / nf_scale,
+                        "far": self.get_bound("far", len(target_indices)) / nf_scale,
+                        "index": target_indices,
+                    },
+                    "scene": scene,
+                }
+                if self.stage == "train" and self.cfg.augment:
+                    example = apply_augmentation_shim(example)
+                yield apply_crop_shim(example, tuple(self.cfg.image_shape))
+'''
+    def load_camera_data(self) -> dict:
+        merged_data = {}
+        for root in self.cfg.roots:
+            camera_json_path = root / self.stage / "camera.json"
+            if camera_json_path.exists():
+                with camera_json_path.open("r") as f:
+                    camera_data = json.load(f)
+                # 合并数据，key 是 frame ID，value 是相机参数
+                merged_data.update(camera_data)
+        return merged_data
+    
     @cached_property
     def index(self) -> dict[str, dict]:
-        """讀取 `evaluation_index_house3k.json` 作為數據索引"""
-        with open(self.cfg.roots[0] / "../../assets/evaluation_index_house3k.json", "r") as f:
-            return json.load(f)  # 回傳 {scene_id: {"context": [...], "target": [...]}}
+        index_path = self.cfg.roots[0] / "../../assets/evaluation_index_house3k.json"
+        with open(index_path, "r") as f:
+            data = json.load(f)
+        return {str(k): v for k, v in data.items()}
+    
+    def __len__(self) -> int:
+        dataset_length = len(self.index.keys()) * self.cfg.test_times_per_scene
+        print(f"DEBUG: Dataset length={dataset_length}")
+        return dataset_length
 
-    @property
-    def data_stage(self) -> str:
-        """根據當前模式決定數據類別"""
-        return "test" if self.stage in ["test", "val"] else self.stage
-
-    def load_camera_params(self, view):
-        """讀取相機 `intrinsics` 和 `extrinsics`"""
-        cam_data = self.cameras[str(view)]
-        intrinsics = torch.tensor(cam_data["intrinsics"], dtype=torch.float32)
-        extrinsics = torch.tensor(cam_data["extrinsics"], dtype=torch.float32)
-        return intrinsics, extrinsics
-
-    def compute_near_far(self, extrinsics):
-        """根據 `extrinsics` 計算 `near` 和 `far`"""
-        camera_positions = extrinsics[:, :3, 3]  # 取得相機位置
-        distances = torch.norm(camera_positions, dim=1)  # 計算到原點的距離
-        near = torch.min(distances) * 0.9  # 取最小距離的 90%
-        far = torch.max(distances) * 1.1  # 取最大距離的 110%
-        return near, far
-
-    def get_bound(self, bound: Literal["near", "far"], extrinsics) -> torch.Tensor:
-        """取得 `near` 和 `far`，適應 `context` & `target`"""
-        near, far = self.compute_near_far(extrinsics)
-        return torch.full((extrinsics.shape[0],), near if bound == "near" else far, dtype=torch.float32)
-
-    def load_image(self, image_path):
-        """讀取影像並轉換為 PyTorch Tensor"""
-        img = Image.open(self.cfg.roots[0] / image_path).convert("RGB")
-        return self.transform(img)  # 轉換為 (3, H, W) Tensor
-
+    
     def __getitem__(self, index):
         scene_keys = list(self.index.keys())
-        scene_id = scene_keys[index] 
-        if scene_id not in self.index:
-            raise KeyError(f"scene_id {scene_id} 不存在於 `evaluation_index_house3k.json`!")
-
+        scene_id = scene_keys[index]
 
         scene_data = self.index[scene_id]
-
-        context_indices = scene_data["context"]
-        target_indices = scene_data["target"]
+        context_indices = scene_data.get("context", [])
+        target_indices = scene_data.get("target", [])
 
         def load_data(views):
             images, intrinsics, extrinsics, indices = [], [], [], []
             for view in views:
-                cam_data = self.cameras[str(view)]
-                images.append(self.load_image(cam_data["image_path"]))
-                intrinsics.append(torch.tensor(cam_data["intrinsics"], dtype=torch.float32))
-                extrinsics.append(torch.tensor(cam_data["extrinsics"], dtype=torch.float32))
+                if str(view) not in self.camera_data:
+                    print(f"WARNING: 視角 `{view}` 不在 `camera.json`，跳過")
+                    continue
+
+                cam_data = self.camera_data[str(view)]
+                img = self.load_image(cam_data["image_path"])
+                images.append(img)
+                intrinsics.append(self.convert_intrinsics(cam_data["intrinsics"]))
+                extrinsics.append(self.convert_extrinsics(cam_data["extrinsics"]))
+
                 indices.append(view)
+
+            if not images:
+                raise ValueError(f"`load_data({views})` 加載失敗，圖像列表為空！")
+
             return torch.stack(images), torch.stack(intrinsics), torch.stack(extrinsics), torch.tensor(indices, dtype=torch.long)
+
 
         context_images, context_intrinsics, context_extrinsics, context_indices = load_data(context_indices)
         target_images, target_intrinsics, target_extrinsics, target_indices = load_data(target_indices)
+        print(f"extrinsics.shape: {context_extrinsics.shape}")
+        print(f"extrinsics.shape: {target_extrinsics.shape}")
 
-        if context_extrinsics.shape[0] == 2:# and self.cfg.make_baseline_1:
+        
+        if context_extrinsics.shape[0] == 2 and self.cfg.make_baseline_1:
             a, b = context_extrinsics[:, :3, 3]
             scale = (a - b).norm()
+            if scale < self.cfg.baseline_epsilon:
+                print(f"Skipped {scene_id} because of insufficient baseline {scale:.6f}")
+                return None
             context_extrinsics[:, :3, 3] /= scale
+            target_extrinsics[:, :3, 3] /= scale
         else:
             scale = 1
+            
+        nf_scale = scale if self.cfg.baseline_scale_bounds else 1.0
 
-        context_near = self.get_bound("near", context_extrinsics)
-        context_far = self.get_bound("far", context_extrinsics)
-        target_near = self.get_bound("near", target_extrinsics)
-        target_far = self.get_bound("far", target_extrinsics)
+        context_near = self.get_bound("near", len(context_indices)) / nf_scale
+        context_far = self.get_bound("far", len(context_indices)) / nf_scale
+        target_near = self.get_bound("near", len(target_indices)) / nf_scale
+        target_far = self.get_bound("far", len(target_indices)) / nf_scale
 
+
+        # 组织返回数据
         return {
             "context": {
                 "extrinsics": context_extrinsics,
                 "intrinsics": context_intrinsics,
                 "image": context_images,
-                "near": context_near / scale,
-                "far": context_far / scale,
+                "near": context_near,
+                "far": context_far,
                 "index": context_indices,
             },
             "target": {
                 "extrinsics": target_extrinsics,
                 "intrinsics": target_intrinsics,
                 "image": target_images,
-                "near": target_near / scale,
-                "far": target_far / scale,
+                "near": target_near,
+                "far": target_far,
                 "index": target_indices,
             },
             "scene": scene_id,
         }
+    '''
+    def convert_poses(
+        self,
+        poses: Float[Tensor, "batch 18"],
+    ) -> tuple[
+        Float[Tensor, "batch 4 4"],  # extrinsics
+        Float[Tensor, "batch 3 3"],  # intrinsics
+    ]:
+        b, _ = poses.shape
 
-    def __len__(self) -> int:
-        """計算測試數據的長度"""
-        # return (
-        #     min(len(self.index.keys()) * self.cfg.test_times_per_scene, self.cfg.test_len)
-        #     if self.stage == "test" and self.cfg.test_len > 0
-        #     else len(self.index.keys()) * self.cfg.test_times_per_scene
-        # )
-        dataset_length = len(self.index.keys())  # 直接取 JSON 的鍵數量
-        print(f"DEBUG: Dataset Length={dataset_length}")  # 記錄長度
-        return dataset_length
+        # Convert the intrinsics to a 3x3 normalized K matrix.
+        intrinsics = torch.eye(3, dtype=torch.float32)
+        intrinsics = repeat(intrinsics, "h w -> b h w", b=b).clone()
+        fx, fy, cx, cy = poses[:, :4].T
+        intrinsics[:, 0, 0] = fx
+        intrinsics[:, 1, 1] = fy
+        intrinsics[:, 0, 2] = cx
+        intrinsics[:, 1, 2] = cy
+
+        # Convert the extrinsics to a 4x4 OpenCV-style W2C matrix.
+        w2c = repeat(torch.eye(4, dtype=torch.float32), "h w -> b h w", b=b).clone()
+        w2c[:, :3] = rearrange(poses[:, 6:], "b (h w) -> b h w", h=3, w=4)
+        return w2c.inverse(), intrinsics
+    '''
+    def convert_intrinsics(self, intrinsics: list[float]) -> Tensor:
+        K = torch.eye(3, dtype=torch.float32)
+        K[0, 0] = intrinsics[0]  # fx
+        K[1, 1] = intrinsics[1]  # fy
+        K[0, 2] = intrinsics[2]  # cx
+        K[1, 2] = intrinsics[3]  # cy
+        return K
+    '''
+    def convert_images(
+        self,
+        images: list[UInt8[Tensor, "..."]],
+    ) -> Float[Tensor, "batch 3 height width"]:
+        torch_images = []
+        for image in images:
+            image = Image.open(BytesIO(image.numpy().tobytes()))
+            torch_images.append(self.to_tensor(image))
+        return torch.stack(torch_images)
+    '''
+    
+    def convert_extrinsics(self, extrinsics: list[float]) -> Tensor:
+        extrinsics = torch.tensor(extrinsics, dtype=torch.float32).reshape(3, 4)
+        E = torch.eye(4, dtype=torch.float32)
+        E[:3, :4] = extrinsics
+        return E.inverse()
+    
+    def get_bound(
+        self,
+        bound: Literal["near", "far"],
+        num_views: int,
+    ) -> Float[Tensor, " view"]:
+        value = torch.tensor(getattr(self, bound), dtype=torch.float32)
+        return repeat(value, "-> v", v=num_views)
+    
+    def load_image(self, image_path: str) -> Tensor:
+        img_path = Path(self.cfg.roots[0]) / self.stage / image_path
+        return self.to_tensor(Image.open(img_path).convert("RGB"))
+    
